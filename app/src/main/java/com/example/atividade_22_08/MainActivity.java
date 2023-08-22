@@ -1,5 +1,6 @@
 package com.example.atividade_22_08;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -16,49 +17,74 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     private Button btnAdiciona;
-    private ArrayList<Compra> compras = new ArrayList<>();
     private AdapterCompra adaptador;
     private ListView listaCompra;
+
+    private ArrayList<Compra> compras = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         listaCompra = findViewById(R.id.listaCompra);
+        btnAdiciona = findViewById(R.id.btnAdiciona);
 
-        btnAdiciona = (Button) findViewById(R.id.btnAdiciona);
+        adaptador = new AdapterCompra(this, compras);
+        listaCompra.setAdapter(adaptador);
+
+
+
         btnAdiciona.setOnClickListener( new EscutadorBotaoAdiciona());
-
-        Intent i = getIntent();
-
-        Compra c = (Compra) i.getSerializableExtra("compra");
-
-        String nome = c.getNome();
-        String marca = c.getMarca();
-        String quantidade = c.getQuantidade();
-
-        Compra ca = new Compra(nome, marca, quantidade);
-        compras.add(ca);
-        adaptador.notifyDataSetChanged();
-
-        listaCompra.setLongClickable(true);
+        EscutadorLista e = new EscutadorLista();
+        listaCompra.setOnItemClickListener( e );
+        listaCompra.setOnItemLongClickListener( e );
     }
 
-    private class EscutadorCliqueLongo implements AdapterView.OnItemLongClickListener{
+    private class EscutadorLista implements AdapterView.OnItemClickListener,
+            AdapterView.OnItemLongClickListener {
         @Override
-        public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l){
+        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
+            Compra c = compras.get(i);
+            if(c.getComprado().isEmpty()){
+                c.setComprado("*COMPRADO*");
+            }else{
+                c.setComprado("");
+            }
+            adaptador.notifyDataSetChanged();
+        }
+
+        @Override
+        public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+            compras.remove( i );
+            adaptador.notifyDataSetChanged();
             return true;
         }
     }
+
 
     private class EscutadorBotaoAdiciona implements View.OnClickListener{
         @Override
         public void onClick(View view){
             Intent i = new Intent( getApplicationContext(), DigitaActivity.class);
-            startActivity(i);
+            startActivityForResult(i, 1);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if( resultCode == RESULT_OK){
+            String nome = data.getStringExtra("nome");
+            String marca = data.getStringExtra("marca");
+            String quantidade = data.getStringExtra("quantidade");
+
+            Compra c = new Compra(nome, marca, quantidade, "");
+            compras.add(c);
+            adaptador.notifyDataSetChanged();
         }
 
     }
-
 }

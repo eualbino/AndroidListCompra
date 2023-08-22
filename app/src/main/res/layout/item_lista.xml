@@ -14,7 +14,6 @@
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.272"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -22,7 +21,7 @@
         android:id="@+id/lblMarca"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
+        android:layout_marginStart="32dp"
         android:text="marca"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lblNome" />
@@ -31,7 +30,7 @@
         android:id="@+id/lblQuantidade"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="16dp"
         android:text="quantidade"
         app:layout_constraintStart_toEndOf="@+id/lblMarca"
         app:layout_constraintTop_toBottomOf="@+id/lblNome" />

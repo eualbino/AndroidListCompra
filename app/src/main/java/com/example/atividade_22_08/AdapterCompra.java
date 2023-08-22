@@ -23,6 +23,7 @@ public class AdapterCompra extends ArrayAdapter<Compra> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent){
         LayoutInflater li = LayoutInflater.from(parent.getContext());
+
         View itemView = li.inflate(R.layout.item_lista, parent, false);
 
         TextView lblNome = itemView.findViewById(R.id.lblNome);
@@ -33,6 +34,7 @@ public class AdapterCompra extends ArrayAdapter<Compra> {
         lblNome.setText(compras.get(position).getNome());
         lblMarca.setText(compras.get(position).getMarca());
         lblQuantidade.setText(compras.get(position).getQuantidade());
+        lblComprado.setText(compras.get(position).getComprado());
 
         return itemView;
     }
